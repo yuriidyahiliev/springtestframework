@@ -18,7 +18,6 @@ public abstract class BasePage {
     @Autowired
     protected ApplicationContext applicationContext;
 
-
     @Autowired
     public void context(ApplicationContext context) {
         this.applicationContext = context;
@@ -32,25 +31,25 @@ public abstract class BasePage {
         return applicationContext.getBean(BrowserConfig.class).webDriver();
     }
 
-    void visitBasePage() {
+    protected void visitBasePage() {
         getDriver().get("http://google.com.ua");
     }
 
-    void visitUrl(final String url) {
+    protected void visitUrl(final String url) {
         getDriver().get(url);
     }
 
-    void clickOnElement(final By by) {
+    protected void clickOnElement(final By by) {
         getWebDriverWait().until(ExpectedConditions.visibilityOfElementLocated(by));
         getDriver().findElement(by).click();
     }
 
-    void setValue(final By by, final CharSequence... charSequences) {
+    protected void setValue(final By by, final CharSequence... charSequences) {
         getWebDriverWait().until(ExpectedConditions.visibilityOfElementLocated(by));
         getDriver().findElement(by).sendKeys(charSequences);
     }
 
-    List<WebElement> elements(final By by) {
+    protected List<WebElement> elements(final By by) {
         return getDriver().findElements(by);
     }
 
