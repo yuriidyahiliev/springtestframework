@@ -1,6 +1,7 @@
 package ui.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -49,11 +50,27 @@ public abstract class BasePage {
         getDriver().findElement(by).sendKeys(charSequences);
     }
 
-    protected List<WebElement> elements(final By by) {
-        return getDriver().findElements(by);
+    private boolean isElementsAreVisible(final List<WebElement> list) {
+        try {
+            getWebDriverWait().until(ExpectedConditions.visibilityOfAllElements(list));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
+
+    public void clickOfElementByIndex(final List<WebElement> list, int index) {
+        if (isElementsAreVisible(list)) {
+            list.get(index).click();
+        } else {
+            throw new TimeoutException(String.format("List with size %d of web elements is not found by index: %d", list.size(), index));
+        }
+    }
+
+
 
     public String getTitle() {
         return getDriver().getTitle();
     }
+
 }
